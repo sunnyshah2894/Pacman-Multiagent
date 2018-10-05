@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7844d76e-82b3-4251-aec7-9b5f6106f3ec" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/multiAgents.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiAgents.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -22,12 +21,12 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="Python Console" value="44" />
-          <entry key="py" value="8273" />
+          <entry key="py" value="8684" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Python" value="8317" />
+          <entry key="Python" value="8728" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -51,11 +50,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/multiAgents.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="355">
-              <caret line="315" selection-start-line="315" selection-end-line="315" />
-              <folding>
-                <element signature="e#8572#11739#0" />
-              </folding>
+            <state relative-caret-position="480">
+              <caret line="619" column="33" selection-start-line="619" selection-start-column="33" selection-end-line="619" selection-end-column="33" />
             </state>
           </provider>
         </entry>
@@ -235,11 +231,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/multiAgents.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="355">
-          <caret line="315" selection-start-line="315" selection-end-line="315" />
-          <folding>
-            <element signature="e#8572#11739#0" />
-          </folding>
+        <state relative-caret-position="480">
+          <caret line="619" column="33" selection-start-line="619" selection-start-column="33" selection-end-line="619" selection-end-column="33" />
         </state>
       </provider>
     </entry>
