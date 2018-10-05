@@ -73,8 +73,61 @@ class ReflexAgent(Agent):
         newGhostStates = successorGameState.getGhostStates()
         newScaredTimes = [ghostState.scaredTimer for ghostState in newGhostStates]
 
-        "*** YOUR CODE HERE ***"
-        return successorGameState.getScore()
+        """
+        Get the list of current and new food positions
+        """
+        currFoodPositions = currentGameState.getFood().asList()
+        newFoodPositions = newFood.asList()
+
+        infinity = 99999999
+
+        """
+        Part 1: Find the minimum distance to the closest food point. I have used the manhattan distance to calculate 
+                the minimum distance. 
+                -   If the length of the currFoodPositions and the newFoodPositions are same, then it is known that the action
+                    did not consume a food.
+                -   If the length is not same, i.e. the newFoodPositions are lesser than the current food positions, then
+                    we calculate the minimum manhattan distance from the closest food point. 
+                
+                This is one part of our score
+        """
+
+        score = infinity
+
+        if len(currFoodPositions) > len(newFoodPositions):
+            score=0
+        else:
+            for foodPoint in newFood.asList():
+                if manhattanDistance(foodPoint, newPos) < score:
+                    score = manhattanDistance(foodPoint, newPos)
+
+        """
+        Part 2: Even if we can eat the food, we need to check if we are safe from ghost. Following are the conditions 
+                we measure the score:
+                1)  If the manhattanDistance to ghost is 1, and ghost is not scared, then we should penalize heavily
+                2)  If the manhattanDistance to ghost is 2, and ghost is not scared, then we should penalize heavily
+                4)  For all the other options, we can see that the chance of getting killed by ghost is inversely 
+                    proportional to (scareTimer of the ghost and manhattanDistance of the ghost)  
+        """
+        for ghost in newGhostStates:
+            manhattanDistanceFromGhost = manhattanDistance(ghost.getPosition(), newPos)
+            if manhattanDistanceFromGhost == 1 and ghost.scaredTimer == 0:
+                score += infinity
+            if manhattanDistanceFromGhost == 2 and ghost.scaredTimer == 0:
+                score += infinity
+            if ( ghost.scaredTimer + manhattanDistance(ghost.getPosition(), newPos)) == 0:
+                score += infinity
+            else:
+                score += 1/( ghost.scaredTimer + manhattanDistance(ghost.getPosition(), newPos))
+                score += 1/( ghost.scaredTimer + manhattanDistance(ghost.getPosition(), newPos))
+
+        """
+            Now, our score metrics above is mixture of minDistance to closest food and relative chance of getting killed 
+            from ghost. Thus, score will be low for a good action. But we need to output a big value for good actions.
+            
+            We do this by negating the score and then returning the negated value
+        """
+        return ( 0 - score )
 
 def scoreEvaluationFunction(currentGameState):
     """
@@ -128,8 +181,141 @@ class MinimaxAgent(MultiAgentSearchAgent):
           gameState.getNumAgents():
             Returns the total number of agents in the game
         """
-        "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+
+        # Find the number of agents. This is (1 + number of ghosts)
+        numberOfAgents = gameState.getNumAgents()
+
+        # Starting from depth 0
+        currDepth = 0
+
+        # Agent property that will be updated every time we find a valid optimal action
+        self.nextActionToTake = Directions.STOP
+
+        # Start from MAX turn
+        self.play_max(gameState, currDepth, self.depth, numberOfAgents)
+
+        # Return the property which contains the best action till now.
+        return self.nextActionToTake
+
+
+    def play_max(self, state, currDepth, maxDepthToReach, numberOfAgents):
+
+        """
+        :param state: current state of the game
+        :param currDepth: current depth of the ply we explored
+        :param numberOfAgents: Number of agents in the game
+        :param maxDepthToReach: Maximum depth we should explore. Any node at this depth should be directly evaluated using the self.evaluation function
+        :return: max_score that the MAX player can achieve.
+
+        -------------------------------------------------------
+
+        This method tries to find the max score a MAX player can make.
+        It is based on the following logic:
+            1)  If the currDepth is the maximum depth according to the self.depth, then directly calculate the score for
+                the state using the self.evaluationFunction and the return the score.
+
+            2)  Calculate the max score based on the scores of the MIN players for every action taken by the MAX player.
+
+            3)  If we cannot find any optimal max score (this may be probably because of state either being a win or a lose position),
+                we directly send the score of that state using the state.getScore() method
+
+            4)  In case, we found the max score, than we update the self.nextActionToTake property, which will be used
+                by our getAction method.
+
+        """
+
+        # If the currDepth is the maximum depth according to the self.depth, then directly calculate the score for
+        # the state using the self.evaluationFunction and the return the score.
+        if (currDepth ) == self.depth:
+            return self.evaluationFunction(state)
+
+
+        listOfActions = state.getLegalActions(0)
+
+        # Start with a very low value for the max_score, which we will try to maximize
+        max_score = -99999999999
+
+        # Stores the best action to take from the current state
+        best_action_so_far = Directions.STOP
+
+        # boolean flag to keep note of whether we found any eligible action
+        best_action_found = False
+
+        # Calculate the max score based on the scores of the MIN players for every action taken by the MAX player.
+        for action in listOfActions:
+
+            # Call the play_min with agent = 1, which is the first ghost.
+            mini_score = self.play_min(state.generateSuccessor(0, action), currDepth, self.depth, 1, numberOfAgents)
+
+            # If the min_score is less than the value found till now. Update out max_score and note the best action
+            if mini_score > max_score:
+                max_score = mini_score
+                best_action_so_far = action
+                best_action_found = True
+
+        # If we cannot find any optimal max score (this may be probably because of state either being a win or a lose position),
+        # we directly send the score of that state using the state.getScore() method
+        if not best_action_found:
+            return state.getScore()
+
+        # In case, we found the max score, than we update the self.nextActionToTake property, which will be used
+        # by our getAction method.
+        self.nextActionToTake = best_action_so_far
+
+        # Return the max_score
+        return max_score
+
+    def play_min(self, state, currDepth, maxDepthToReach, agent, numberOfAgents):
+
+        """
+
+        :param state: current state of the game
+        :param currDepth: current depth of the ply we explored
+        :param maxDepthToReach: maximum depth we should reach to
+        :param agent: Agent Id of the ghost.
+        :param numberOfAgents: Number of agents in the game
+        :return: max_score that the MAX player (ghost agent) can achieve.
+
+        This method tries to find the min score a MIN player (ghost agent) can make.
+        It is based on the following logic:
+            1)  Calculate the min score recursively for each action. A action taken by agent should consult the next agent for its
+                score and similarly till we traverse all the MIN agents.
+
+            2)  If we cannot find any optimal min score (this may be probably because of state either being a win or a lose position),
+                we directly send the score of that state using the state.getScore() method
+
+            3)  In case, we found the min score, we return the value. This will be the minimum score the ghosts(adversaries)
+                will try to make to compete against pacman.
+
+        """
+
+        legalActionsFromGhost = state.getLegalActions(agent)
+
+        # start with a large min value
+        min_score = 99999999999
+
+        # Calculate the min score recursively for each action. A action taken by agent should consult the next agent for its
+        # score and similarly till we traverse all the MIN agents.
+        for action in legalActionsFromGhost:
+
+            # Find the successor state using the state.generateSuccessor method
+            successor = state.generateSuccessor(agent, action)
+
+            # If there are no agents remaining, we call the play_max to calculate the scores for the next depth
+            if (agent+1) == numberOfAgents:
+                min_score = min(min_score, self.play_max(successor, currDepth + 1, maxDepthToReach, numberOfAgents))
+
+            # Else we call the play_min for the next ghost.
+            else:
+                min_score = min(min_score, self.play_min(successor, currDepth, maxDepthToReach, agent + 1, numberOfAgents))
+
+        # If we couldn't find any min_score, we return the state.getScore() instead (this may be probably because of state either being a win or a lose position)
+        if min_score == 99999999999:
+            return state.getScore()
+
+        # return the min_score achieved by the agent
+        return min_score
+
 
 class AlphaBetaAgent(MultiAgentSearchAgent):
     """
