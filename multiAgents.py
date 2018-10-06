@@ -74,52 +74,43 @@ class ReflexAgent(Agent):
         newScaredTimes = [ghostState.scaredTimer for ghostState in newGhostStates]
 
         """
-        Get the list of current and new food positions
+        Get the list of current food positions
         """
         currFoodPositions = currentGameState.getFood().asList()
-        newFoodPositions = newFood.asList()
-
-        infinity = 99999999
 
         """
         Part 1: Find the minimum distance to the closest food point. I have used the manhattan distance to calculate 
                 the minimum distance. 
-                -   If the length of the currFoodPositions and the newFoodPositions are same, then it is known that the action
-                    did not consume a food.
-                -   If the length is not same, i.e. the newFoodPositions are lesser than the current food positions, then
-                    we calculate the minimum manhattan distance from the closest food point. 
-                
                 This is one part of our score
         """
 
+        infinity = 99999999999
         score = infinity
 
-        if len(currFoodPositions) > len(newFoodPositions):
-            score=0
-        else:
-            for foodPoint in newFood.asList():
-                if manhattanDistance(foodPoint, newPos) < score:
-                    score = manhattanDistance(foodPoint, newPos)
+        for foodPoint in currFoodPositions:
+            score = min(score, manhattanDistance(foodPoint, newPos))
 
         """
         Part 2: Even if we can eat the food, we need to check if we are safe from ghost. Following are the conditions 
-                we measure the score:
+                on which we measure the score:
                 1)  If the manhattanDistance to ghost is 1, and ghost is not scared, then we should penalize heavily
                 2)  If the manhattanDistance to ghost is 2, and ghost is not scared, then we should penalize heavily
+                3)  (Manhattan distance + scaredTimer for the ghost) is zero, we penalize heavily, since step 4 below will 
+                    fail
                 4)  For all the other options, we can see that the chance of getting killed by ghost is inversely 
                     proportional to (scareTimer of the ghost and manhattanDistance of the ghost)  
         """
         for ghost in newGhostStates:
             manhattanDistanceFromGhost = manhattanDistance(ghost.getPosition(), newPos)
-            if manhattanDistanceFromGhost == 1 and ghost.scaredTimer == 0:
+            if manhattanDistanceFromGhost == 1 and ghost.scaredTimer <= 0:
                 score += infinity
-            if manhattanDistanceFromGhost == 2 and ghost.scaredTimer == 0:
+            if manhattanDistanceFromGhost == 2 and ghost.scaredTimer <= 0:
                 score += infinity
-            if ( ghost.scaredTimer + manhattanDistance(ghost.getPosition(), newPos)) == 0:
+            if ( ghost.scaredTimer + manhattanDistance(ghost.getPosition(), newPos)) <= 0:
                 score += infinity
             else:
                 score += 1/( ghost.scaredTimer + manhattanDistance(ghost.getPosition(), newPos))
-                score += 1/( ghost.scaredTimer + manhattanDistance(ghost.getPosition(), newPos))
+                # score += 1/( ghost.scaredTimer + manhattanDistance(ghost.getPosition(), newPos))
 
         """
             Now, our score metrics above is mixture of minDistance to closest food and relative chance of getting killed 
@@ -361,6 +352,9 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
 
             2)  Calculate the max score based on the scores of the MIN players for every action taken by the MAX player.
 
+                2.1) Check if the max score so far has crossed the beta value. If yes, then return, since the MIN player will
+                     not be using this value.
+
             3)  If we cannot find any optimal max score (this may be probably because of state either being a win or a lose position),
                 we directly send the score of that state using the state.getScore() method
 
@@ -397,9 +391,12 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
                 best_action_so_far=action
                 best_action_found=True
 
+            # if the max score so far is greater than the current beta value, then the MIN player is never
+            # going to use this value. So stop expanding further
             if max_score > beta:
-                break;
+                break
 
+            # Update the alpha value
             alpha = max(alpha,max_score)
 
         # If we cannot find any optimal max score (this may be probably because of state either being a win or a lose position),
@@ -433,6 +430,9 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
             2)  If we cannot find any optimal min score (this may be probably because of state either being a win or a lose position),
                 we directly send the score of that state using the state.getScore() method
 
+                2.1) Check if the min score so far has gone below the alpha value. If yes, then return, since the MAX player will
+                     not be using this value.
+
             3)  In case, we found the min score, we return the value. This will be the minimum score the ghosts(adversaries)
                 will try to make to compete against pacman.
 
@@ -459,9 +459,12 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
                 min_score=min(min_score,
                               self.play_min(successor, currDepth, maxDepthToReach, agent + 1, numberOfAgents, alpha, beta))
 
+            # IF min_score is below alpha, then the MAX have already found a path with max score,
+            # so do not expand further
             if min_score < alpha:
-                break;
+                break
 
+            # update beta till now
             beta = min( beta, min_score )
 
         # If we couldn't find any min_score, we return the state.getScore() instead (this may be probably because of state either being a win or a lose position)
@@ -583,11 +586,13 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
             1)  Calculate the min score recursively for each action. A action taken by agent should consult the next agent for its
                 score and similarly till we traverse all the MIN agents.
 
-            2)  If we cannot find any optimal min score (this may be probably because of state either being a win or a lose position),
+            2)  Store the score from each action in a list.
+
+            3)  If we cannot find any optimal min score (this may be probably because of state either being a win or a lose position),
                 we directly send the score of that state using the state.getScore() method
 
-            3)  In case, we found the min score, we return the value. This will be the minimum score the ghosts(adversaries)
-                will try to make to compete against pacman.
+            4)  Now since the ghosts play randomly, we can find the expected score
+                as the sum of scores divided by the number of actions.
 
         """
 
@@ -616,7 +621,7 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
         if len(scores) == 0:
             return state.getScore()
 
-        # return the min_score achieved by the agent
+        # return the expected score as sum of all scores divided by the number of legal actions.
         return float(sum(scores))/len(scores)
 
 def betterEvaluationFunction(currentGameState):
