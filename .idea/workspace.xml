@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="7844d76e-82b3-4251-aec7-9b5f6106f3ec" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/multiAgents.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiAgents.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/report.docx" beforeDir="false" afterPath="$PROJECT_DIR$/report.docx" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -21,18 +22,18 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="Python Console" value="44" />
-          <entry key="py" value="10040" />
+          <entry key="py" value="11382" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Python" value="10084" />
+          <entry key="Python" value="11426" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="CONFIG" value="1" />
-          <entry key="py" value="21" />
+          <entry key="py" value="25" />
           <entry key="solution" value="2" />
           <entry key="test" value="2" />
         </counts>
@@ -40,7 +41,7 @@
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="PLAIN_TEXT" value="5" />
-          <entry key="Python" value="21" />
+          <entry key="Python" value="25" />
         </counts>
       </usages-collector>
     </session>
@@ -50,12 +51,28 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/multiAgents.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-340">
-              <caret line="597" lean-forward="true" selection-start-line="597" selection-end-line="597" />
+            <state relative-caret-position="524">
+              <caret line="535" column="8" selection-start-line="535" selection-start-column="8" selection-end-line="535" selection-end-column="8" />
               <folding>
-                <element signature="e#14405#15096#0" />
-                <element signature="e#21263#22055#0" />
+                <element signature="e#8123#11272#0" />
+                <element signature="e#9430#9536#0" />
+                <element signature="e#11675#14106#0" />
+                <element signature="e#14752#18374#0" />
+                <element signature="e#20316#23264#0" />
+                <element signature="e#24114#24989#0" />
+                <element signature="e#22452#25598#0" />
+                <element signature="e#25708#28216#0" />
+                <marker date="1539047946346" expanded="true" signature="8797:9039" ph="..." />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/game.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="552">
+              <caret line="646" column="64" selection-start-line="646" selection-start-column="55" selection-end-line="646" selection-end-column="64" />
             </state>
           </provider>
         </entry>
@@ -66,7 +83,16 @@
     <findStrings>
       <find>reflex</find>
       <find>getAction</find>
+      <find>max_vaue</find>
+      <find>play_min</find>
+      <find>play_chance</find>
+      <find>getaction</find>
     </findStrings>
+    <replaceStrings>
+      <replace>min_value</replace>
+      <replace>max_value</replace>
+      <replace>chance_value</replace>
+    </replaceStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -80,7 +106,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="240" />
     <option name="y" value="125" />
     <option name="width" value="1440" />
@@ -110,17 +136,6 @@
             <path>
               <item name="multiagent" type="b2602c69:ProjectViewProjectNode" />
               <item name="multiagent" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="multiagent" type="b2602c69:ProjectViewProjectNode" />
-              <item name="multiagent" type="462c0819:PsiDirectoryNode" />
-              <item name="test_cases" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="multiagent" type="b2602c69:ProjectViewProjectNode" />
-              <item name="multiagent" type="462c0819:PsiDirectoryNode" />
-              <item name="test_cases" type="462c0819:PsiDirectoryNode" />
-              <item name="q2" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -226,20 +241,39 @@
         <state relative-caret-position="-8357" />
       </provider>
     </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Temp/Temp1_112044068.zip/multiAgents.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-10680">
+          <caret line="119" column="24" lean-forward="true" selection-start-line="119" selection-start-column="24" selection-end-line="119" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Temp/Temp1_112044068-1.zip/multiAgents.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2480" />
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/game.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="36" column="32" lean-forward="true" selection-start-line="36" selection-start-column="32" selection-end-line="36" selection-end-column="32" />
+        <state relative-caret-position="552">
+          <caret line="646" column="64" selection-start-line="646" selection-start-column="55" selection-end-line="646" selection-end-column="64" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/multiAgents.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-340">
-          <caret line="597" lean-forward="true" selection-start-line="597" selection-end-line="597" />
+        <state relative-caret-position="524">
+          <caret line="535" column="8" selection-start-line="535" selection-start-column="8" selection-end-line="535" selection-end-column="8" />
           <folding>
-            <element signature="e#14405#15096#0" />
-            <element signature="e#21263#22055#0" />
+            <element signature="e#8123#11272#0" />
+            <element signature="e#9430#9536#0" />
+            <element signature="e#11675#14106#0" />
+            <element signature="e#14752#18374#0" />
+            <element signature="e#20316#23264#0" />
+            <element signature="e#24114#24989#0" />
+            <element signature="e#22452#25598#0" />
+            <element signature="e#25708#28216#0" />
+            <marker date="1539047946346" expanded="true" signature="8797:9039" ph="..." />
           </folding>
         </state>
       </provider>

@@ -110,7 +110,6 @@ class ReflexAgent(Agent):
                 score += infinity
             else:
                 score += 1/( ghost.scaredTimer + manhattanDistance(ghost.getPosition(), newPos))
-                # score += 1/( ghost.scaredTimer + manhattanDistance(ghost.getPosition(), newPos))
 
         """
             Now, our score metrics above is mixture of minDistance to closest food and relative chance of getting killed 
@@ -154,7 +153,7 @@ class MinimaxAgent(MultiAgentSearchAgent):
     """
       Your minimax agent (question 2)
     """
-
+    totalNodesExpandedTillNow = 0
     def getAction(self, gameState):
         """
           Returns the minimax action from the current gameState using self.depth
@@ -182,14 +181,34 @@ class MinimaxAgent(MultiAgentSearchAgent):
         # Agent property that will be updated every time we find a valid optimal action
         self.nextActionToTake = Directions.STOP
 
+
         # Start from MAX turn
-        self.play_max(gameState, currDepth, self.depth, numberOfAgents)
+        self.max_value(gameState, currDepth, self.depth, numberOfAgents)
+
+        # print "totalNodesExpandedTillNow = ", self.totalNodesExpandedTillNow
 
         # Return the property which contains the best action till now.
         return self.nextActionToTake
 
+    def value(self, state, currDepth, maxDepthToReach, agent, numberOfAgents ):
+        """
 
-    def play_max(self, state, currDepth, maxDepthToReach, numberOfAgents):
+            There can be 2 possible actions:
+                1)  If we have went through all the ghosts, then we will receive agent value as numberOfAgents.
+                    This means that, we have finished expanding the plies for MIN and we should now call max_value.
+                    In doing so, we should also increase the depth, as completing the MIN for all ghosts, means one
+                    total move.
+                2)  Agent is between 1 and numberOfAgents-1, indicating we are still in the same move, where we
+                    are evaluating the actions for each ghost.
+
+        """
+        self.totalNodesExpandedTillNow += 1
+        if agent % numberOfAgents == 0:
+            return self.max_value( state, currDepth+1, maxDepthToReach, numberOfAgents )
+        else:
+            return self.min_value( state,currDepth, maxDepthToReach, agent, numberOfAgents )
+
+    def max_value(self, state, currDepth, maxDepthToReach, numberOfAgents):
 
         """
         :param state: current state of the game
@@ -235,8 +254,8 @@ class MinimaxAgent(MultiAgentSearchAgent):
         # Calculate the max score based on the scores of the MIN players for every action taken by the MAX player.
         for action in listOfActions:
 
-            # Call the play_min with agent = 1, which is the first ghost.
-            mini_score = self.play_min(state.generateSuccessor(0, action), currDepth, self.depth, 1, numberOfAgents)
+            # Call the min_value(value function will decide ) with agent = 1, which is the first ghost.
+            mini_score = self.value(state.generateSuccessor(0, action), currDepth, self.depth, 1, numberOfAgents)
 
             # If the min_score is less than the value found till now. Update out max_score and note the best action
             if mini_score > max_score:
@@ -256,7 +275,7 @@ class MinimaxAgent(MultiAgentSearchAgent):
         # Return the max_score
         return max_score
 
-    def play_min(self, state, currDepth, maxDepthToReach, agent, numberOfAgents):
+    def min_value(self, state, currDepth, maxDepthToReach, agent, numberOfAgents):
 
         """
 
@@ -292,13 +311,10 @@ class MinimaxAgent(MultiAgentSearchAgent):
             # Find the successor state using the state.generateSuccessor method
             successor = state.generateSuccessor(agent, action)
 
-            # If there are no agents remaining, we call the play_max to calculate the scores for the next depth
-            if (agent+1) == numberOfAgents:
-                min_score = min(min_score, self.play_max(successor, currDepth + 1, maxDepthToReach, numberOfAgents))
-
-            # Else we call the play_min for the next ghost.
-            else:
-                min_score = min(min_score, self.play_min(successor, currDepth, maxDepthToReach, agent + 1, numberOfAgents))
+            # If there are no agents remaining, we call the max_value to calculate the scores for the next depth
+            # Else we call the min_value for the next ghost.
+            # Our value function will take care of this
+            min_score = min(min_score, self.value(successor, currDepth, maxDepthToReach, agent + 1, numberOfAgents))
 
         # If we couldn't find any min_score, we return the state.getScore() instead (this may be probably because of state either being a win or a lose position)
         if min_score == 99999999999:
@@ -312,7 +328,7 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
     """
       Your minimax agent with alpha-beta pruning (question 3)
     """
-
+    totalNodesExpandedTillNow = 0
     def getAction(self, gameState):
         """
           Returns the minimax action using self.depth and self.evaluationFunction
@@ -329,12 +345,32 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
         beta = 99999999999
 
         # Start from MAX turn
-        self.play_max(gameState, currDepth, self.depth, numberOfAgents , alpha, beta)
+        self.max_value(gameState, currDepth, self.depth, numberOfAgents , alpha, beta)
+
+        # print "totalNodesExpandedTillNow = ", self.totalNodesExpandedTillNow
 
         # Return the property which contains the best action till now.
         return self.nextActionToTake
 
-    def play_max(self, state, currDepth, maxDepthToReach, numberOfAgents, alpha, beta):
+    def value(self, state, currDepth, maxDepthToReach, agent, numberOfAgents, alpha, beta ):
+        """
+
+            There can be 2 possible actions:
+                1)  If we have went through all the ghosts, then we will receive agent value as numberOfAgents.
+                    This means that, we have finished expanding the plies for MIN and we should now call max_value.
+                    In doing so, we should also increase the depth, as completing the MIN for all ghosts, means one
+                    total move.
+                2)  Agent is between 1 and numberOfAgents-1, indicating we are still in the same move, where we
+                    are evaluating the actions for each ghost.
+
+        """
+        self.totalNodesExpandedTillNow += 1
+        if agent % numberOfAgents == 0:
+            return self.max_value( state, currDepth+1, maxDepthToReach, numberOfAgents, alpha, beta )
+        else:
+            return self.min_value( state,currDepth, maxDepthToReach, agent, numberOfAgents, alpha, beta )
+
+    def max_value(self, state, currDepth, maxDepthToReach, numberOfAgents, alpha, beta):
 
         """
         :param state: current state of the game
@@ -382,8 +418,8 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
         # Calculate the max score based on the scores of the MIN players for every action taken by the MAX player.
         for action in listOfActions:
 
-            # Call the play_min with agent = 1, which is the first ghost.
-            mini_score=self.play_min(state.generateSuccessor(0, action), currDepth, self.depth, 1, numberOfAgents, alpha, beta)
+            # Call the value(which will in turn call min_value) with agent = 1, which is the first ghost.
+            mini_score=self.value(state.generateSuccessor(0, action), currDepth, self.depth, 1, numberOfAgents, alpha, beta)
 
             # If the min_score is less than the value found till now. Update out max_score and note the best action
             if mini_score > max_score:
@@ -411,7 +447,7 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
         # Return the max_score
         return max_score
 
-    def play_min(self, state, currDepth, maxDepthToReach, agent, numberOfAgents, alpha, beta):
+    def min_value(self, state, currDepth, maxDepthToReach, agent, numberOfAgents, alpha, beta):
 
         """
 
@@ -450,14 +486,10 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
             # Find the successor state using the state.generateSuccessor method
             successor=state.generateSuccessor(agent, action)
 
-            # If there are no agents remaining, we call the play_max to calculate the scores for the next depth
-            if (agent + 1) == numberOfAgents:
-                min_score=min(min_score, self.play_max(successor, currDepth + 1, maxDepthToReach, numberOfAgents, alpha, beta))
-
-            # Else we call the play_min for the next ghost.
-            else:
-                min_score=min(min_score,
-                              self.play_min(successor, currDepth, maxDepthToReach, agent + 1, numberOfAgents, alpha, beta))
+            # If there are no agents remaining, we call the max_value to calculate the scores for the next depth
+            # Else we call the min_value for the next ghost.
+            # Our value function will take care of this
+            min_score=min(min_score, self.value(successor, currDepth, maxDepthToReach, agent + 1, numberOfAgents, alpha, beta))
 
             # IF min_score is below alpha, then the MAX have already found a path with max score,
             # so do not expand further
@@ -478,7 +510,7 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
     """
       Your expectimax agent (question 4)
     """
-
+    totalNodesExpandedTillNow = 0
     def getAction(self, gameState):
         """
           Returns the expectimax action using self.depth and self.evaluationFunction
@@ -498,12 +530,32 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
         beta = 99999999999
 
         # Start from MAX turn
-        self.play_max(gameState, currDepth, self.depth, numberOfAgents , alpha, beta)
+        self.max_value(gameState, currDepth, self.depth, numberOfAgents)
+
+        # print "totalNodesExpandedTillNow = ", self.totalNodesExpandedTillNow
 
         # Return the property which contains the best action till now.
         return self.nextActionToTake
 
-    def play_max(self, state, currDepth, maxDepthToReach, numberOfAgents, alpha, beta):
+    def value(self, state, currDepth, maxDepthToReach, agent, numberOfAgents):
+        """
+
+            There can be 2 possible actions:
+                1)  If we have went through all the ghosts, then we will receive agent value as numberOfAgents.
+                    This means that, we have finished expanding the plies for CHANCE nodes and we should now call max_value.
+                    In doing so, we should also increase the depth, as completing the CHANCE for all ghosts, means one
+                    total move.
+                2)  Agent is between 1 and numberOfAgents-1, indicating we are still in the same move, where we
+                    are evaluating the actions for each ghost, which will be a chance_value for ghost.
+
+        """
+        self.totalNodesExpandedTillNow += 1
+        if agent % numberOfAgents == 0:
+            return self.max_value( state, currDepth+1, maxDepthToReach, numberOfAgents)
+        else:
+            return self.chance_value( state,currDepth, maxDepthToReach, agent, numberOfAgents)
+
+    def max_value(self, state, currDepth, maxDepthToReach, numberOfAgents):
 
         """
         :param state: current state of the game
@@ -548,8 +600,8 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
         # Calculate the max score based on the scores of the MIN players for every action taken by the MAX player.
         for action in listOfActions:
 
-            # Call the play_min with agent = 1, which is the first ghost.
-            mini_score=self.play_chance(state.generateSuccessor(0, action), currDepth, self.depth, 1, numberOfAgents, alpha, beta)
+            # Call the min_value with agent = 1, which is the first ghost.
+            mini_score=self.value(state.generateSuccessor(0, action), currDepth, self.depth, 1, numberOfAgents)
 
             # If the min_score is less than the value found till now. Update out max_score and note the best action
             if mini_score > max_score:
@@ -570,7 +622,7 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
         # Return the max_score
         return max_score
 
-    def play_chance(self, state, currDepth, maxDepthToReach, agent, numberOfAgents, alpha, beta):
+    def chance_value(self, state, currDepth, maxDepthToReach, agent, numberOfAgents):
 
         """
 
@@ -608,13 +660,10 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
             # Find the successor state using the state.generateSuccessor method
             successor=state.generateSuccessor(agent, action)
 
-            # If there are no agents remaining, we call the play_max to calculate the scores for the next depth
-            if (agent + 1) == numberOfAgents:
-                scores.append(self.play_max(successor, currDepth + 1, maxDepthToReach, numberOfAgents, alpha, beta))
-
-            # Else we call the play_min for the next ghost.
-            else:
-                scores.append(self.play_chance(successor, currDepth, maxDepthToReach, agent + 1, numberOfAgents, alpha, beta))
+            # If there are no agents remaining, we call the max_value to calculate the scores for the next depth
+            # Else we call the chance_value for the next ghost.
+            # Our value function will take care of this
+            scores.append(self.value(successor, currDepth, maxDepthToReach, agent + 1, numberOfAgents))
 
 
         # If we couldn't find any min_score, we return the state.getScore() instead (this may be probably because of state either being a win or a lose position)
