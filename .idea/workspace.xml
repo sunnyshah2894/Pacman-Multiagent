@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7844d76e-82b3-4251-aec7-9b5f6106f3ec" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/multiAgents.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiAgents.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/report.docx" beforeDir="false" afterPath="$PROJECT_DIR$/report.docx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -15,8 +14,10 @@
     <session id="1142629084">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
+          <entry key="project.closed" value="2" />
           <entry key="project.open.time.0" value="1" />
-          <entry key="project.opened" value="1" />
+          <entry key="project.open.time.3" value="1" />
+          <entry key="project.opened" value="2" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
@@ -33,7 +34,7 @@
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="CONFIG" value="1" />
-          <entry key="py" value="25" />
+          <entry key="py" value="27" />
           <entry key="solution" value="2" />
           <entry key="test" value="2" />
         </counts>
@@ -41,29 +42,18 @@
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="PLAIN_TEXT" value="5" />
-          <entry key="Python" value="25" />
+          <entry key="Python" value="27" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
-    <leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/multiAgents.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="524">
-              <caret line="535" column="8" selection-start-line="535" selection-start-column="8" selection-end-line="535" selection-end-column="8" />
-              <folding>
-                <element signature="e#8123#11272#0" />
-                <element signature="e#9430#9536#0" />
-                <element signature="e#11675#14106#0" />
-                <element signature="e#14752#18374#0" />
-                <element signature="e#20316#23264#0" />
-                <element signature="e#24114#24989#0" />
-                <element signature="e#22452#25598#0" />
-                <element signature="e#25708#28216#0" />
-                <marker date="1539047946346" expanded="true" signature="8797:9039" ph="..." />
-              </folding>
+            <state relative-caret-position="584">
+              <caret line="538" selection-start-line="538" selection-end-line="538" />
             </state>
           </provider>
         </entry>
@@ -71,7 +61,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/game.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="552">
+            <state relative-caret-position="12860">
               <caret line="646" column="64" selection-start-line="646" selection-start-column="55" selection-end-line="646" selection-end-column="64" />
             </state>
           </provider>
@@ -106,7 +96,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="240" />
     <option name="y" value="125" />
     <option name="width" value="1440" />
@@ -144,7 +134,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../CSE538_Assignment_2" />
     <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.General" />
   </component>
   <component name="RunDashboard">
@@ -174,15 +164,10 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info id="Favorites" side_tool="true" />
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24983476" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Version Control" weight="0.32991204" />
-      <window_info anchor="bottom" id="Python Console" weight="0.32991204" />
-      <window_info active="true" anchor="bottom" x="329" y="40" width="1195" height="640" id="Terminal" type="WINDOWED" visible="true" weight="0.32991204" />
-      <window_info anchor="bottom" id="Event Log" side_tool="true" />
+      <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" />
@@ -190,6 +175,10 @@
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Version Control" order="7" weight="0.32991204" />
+      <window_info anchor="bottom" x="329" y="40" width="1195" height="640" id="Terminal" order="8" type="WINDOWED" weight="0.32991204" />
+      <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
+      <window_info anchor="bottom" id="Python Console" order="10" weight="0.32991204" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -241,40 +230,30 @@
         <state relative-caret-position="-8357" />
       </provider>
     </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Temp/Temp1_112044068-1.zip/multiAgents.py" />
     <entry file="file://$USER_HOME$/AppData/Local/Temp/Temp1_112044068.zip/multiAgents.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-10680">
+        <state relative-caret-position="-1180">
           <caret line="119" column="24" lean-forward="true" selection-start-line="119" selection-start-column="24" selection-end-line="119" selection-end-column="24" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Temp/Temp1_112044068-1.zip/multiAgents.py">
+    <entry file="file://$USER_HOME$/AppData/Local/Temp/Temp1_112044068-2.zip/multiAgents.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2480" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/game.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="552">
-          <caret line="646" column="64" selection-start-line="646" selection-start-column="55" selection-end-line="646" selection-end-column="64" />
-        </state>
+        <state relative-caret-position="-2940" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/multiAgents.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="524">
-          <caret line="535" column="8" selection-start-line="535" selection-start-column="8" selection-end-line="535" selection-end-column="8" />
-          <folding>
-            <element signature="e#8123#11272#0" />
-            <element signature="e#9430#9536#0" />
-            <element signature="e#11675#14106#0" />
-            <element signature="e#14752#18374#0" />
-            <element signature="e#20316#23264#0" />
-            <element signature="e#24114#24989#0" />
-            <element signature="e#22452#25598#0" />
-            <element signature="e#25708#28216#0" />
-            <marker date="1539047946346" expanded="true" signature="8797:9039" ph="..." />
-          </folding>
+        <state relative-caret-position="584">
+          <caret line="538" selection-start-line="538" selection-end-line="538" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/game.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="12860">
+          <caret line="646" column="64" selection-start-line="646" selection-start-column="55" selection-end-line="646" selection-end-column="64" />
         </state>
       </provider>
     </entry>
